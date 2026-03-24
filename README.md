@@ -5,10 +5,10 @@ Script para limpeza de perfis de usuario no Windows
 
 Remove:
 - Perfis registrados no sistema
-- Pastas orfas em C:\Users
+- Perfis e Pastas orfas em C:\Users
 
 Uso:
-Executar como administrador
+Abrir com Powershell como administrador
 
 Atencao:
 Revise a lista antes de confirmar a exclusao
