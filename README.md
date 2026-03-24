@@ -8,7 +8,7 @@ Remove:
 - Perfis e Pastas orfas em C:\Users
 
 Uso:
-Abrir com Powershell como administrador
+- Abrir com Powershell como administrador
 
 Atencao:
-Revise a lista antes de confirmar a exclusao
+- Revise a lista antes de confirmar a exclusao
