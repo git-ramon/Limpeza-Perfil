@@ -67,14 +67,14 @@ $orfasList = $orfas | ForEach-Object {
 # Junta tudo
 $todos = $profileList + $orfasList
 
-# Exibe
+# Exibe Perfis
 Write-Host ""
 Write-Host "=== PERFIS ENCONTRADOS ===" -ForegroundColor Green
 Write-Host ""
 
 $todos | Select-Object Usuario, "Ultimo Uso", Tipo | Format-Table -AutoSize
 
-# Input corrigido
+# Input para entrada de usuário
 $manter = Read-Host "Digite os usuarios que deseja manter (separados por virgula)"
 $manterLista = $manter -split "," | ForEach-Object { $_.Trim() }
 
@@ -120,7 +120,7 @@ if ($confirm -eq "S") {
             }
 
             Escrever-Log -Usuario $perfil.Usuario -Tipo $perfil.Tipo -Status "Sucesso"
-            
+
         } catch {
             Write-Host "[$i/$total] Erro ao remover: $($perfil.Usuario)" -ForegroundColor Red
         }

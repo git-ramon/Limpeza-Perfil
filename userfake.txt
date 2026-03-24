@@ -1,4 +1,4 @@
-Script para criar 10 usuários reais + gerar perfil
+Script para criar 10 usuários e gerar perfil
 
 # Quantidade de usuarios
 $total = 10
@@ -16,7 +16,7 @@ for ($i = 1; $i -le $total; $i++) {
     # Garante que nao precisa trocar senha
     net user $user /passwordchg:no | Out-Null
 
-    # Cria o perfil (isso que faltava no seu teste)
+    # Cria o perfil
     Write-Host "Gerando perfil para: $user" -ForegroundColor Yellow
 
     try {
