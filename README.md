@@ -55,9 +55,9 @@ O repositório inclui um script auxiliar para:
 
 👨‍💻 Autor:
 
-Ramon Rodrigues 
-    📧 ramonrodriguesnw@gmail.com  
-    🔗 https://github.com/git-ramon/Limpeza-Perfil  
+Ramon Rodrigues   
+📧 ramonrodriguesnw@gmail.com  
+🔗 https://github.com/git-ramon/Limpeza-Perfil  
 
 ---
 
