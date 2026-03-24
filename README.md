@@ -8,11 +8,11 @@ Script em PowerShell para automatizar a limpeza de perfis de usuários em sistem
 
 O script realiza:
 
-- 🔹 Listagem de todos os perfis em `C:\Users`
-- 🔹 Identificação de perfis registrados no sistema
-- 🔹 Identificação de pastas órfãs (sem registro)
-- 🔹 Remoção segura com confirmação do usuário
-- 🔹 Registro de log detalhado
+🔹 Listagem de todos os perfis em `C:\Users`
+🔹 Identificação de perfis registrados no sistema
+🔹 Identificação de pastas órfãs (sem registro)
+🔹 Remoção segura com confirmação do usuário
+🔹 Registro de log detalhado
 
 ---
 
@@ -56,8 +56,8 @@ O repositório inclui um script auxiliar para:
 👨‍💻 Autor:
 
 Ramon Rodrigues
-📧 ramonrodriguesnw@gmail.com
-🔗 https://github.com/git-ramon/Limpeza-Perfil
+    📧 ramonrodriguesnw@gmail.com
+    🔗 https://github.com/git-ramon/Limpeza-Perfil
 
 ---
 
@@ -69,5 +69,5 @@ Uso livre para fins educacionais e corporativos.
 
 ## Contribuição
 
-Contribuições são bem-vindas!
-Sinta-se à vontade para abrir issues, sugerir melhorias ou enviar um pull request.
+    Contribuições são bem-vindas!
+    Sinta-se à vontade para abrir issues, sugerir melhorias ou enviar um pull request.
