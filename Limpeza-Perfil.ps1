@@ -2,8 +2,30 @@
 # Repositorio: https://github.com/git-ramon/Limpeza-Perfil
 # Contato: ramonrodriguesnw@gmail.com
 
+#diretório do log de registro
+$logPath = "C:\Log\limpeza_perfis.log"
 
-$log = "C:\Log Files\limpeza_perfis.log"
+# cria pasta se nao existir
+if (-not (Test-Path "C:\Log")) {
+    New-Item -Path "C:\Log" -ItemType Directory | Out-Null
+}
+
+    # Log de registro
+    function Escrever-Log {
+        param (
+            $Usuario,
+            $Tipo,
+            $Status
+        )
+
+        $data = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        $executadoPor = $env:USERNAME
+        $maquina = $env:COMPUTERNAME
+
+        $linha = "$data | UsuarioRemovido: $Usuario | Tipo: $Tipo | Status: $Status | ExecutadoPor: $executadoPor | Maquina: $maquina"
+
+        Add-Content -Path $logPath -Value $linha
+    }
 
 # Lista perfis
 $profiles = Get-CimInstance Win32_UserProfile | Where-Object {
@@ -47,7 +69,7 @@ $todos = $profileList + $orfasList
 
 # Exibe
 Write-Host ""
-Write-Host "=== PERFIS ENCONTRADOS ==="
+Write-Host "=== PERFIS ENCONTRADOS ===" -ForegroundColor Green
 Write-Host ""
 
 $todos | Select-Object Usuario, "Ultimo Uso", Tipo | Format-Table -AutoSize
@@ -63,7 +85,7 @@ $remover = $todos | Where-Object {
 
 # Mostra remocao
 Write-Host ""
-Write-Host "=== PERFIS QUE SERAO REMOVIDOS ==="
+Write-Host "=== PERFIS QUE SERAO REMOVIDOS ===" -ForegroundColor Red
 Write-Host ""
 
 $remover | Select-Object Usuario, "Ultimo Uso", Tipo | Format-Table -AutoSize
@@ -96,6 +118,9 @@ if ($confirm -eq "S") {
                 Remove-Item $perfil.Caminho -Recurse -Force
                 Write-Host "[$i/$total] Removido orfao: $($perfil.Usuario)" -ForegroundColor Green
             }
+
+            Escrever-Log -Usuario $perfil.Usuario -Tipo $perfil.Tipo -Status "Sucesso"
+            
         } catch {
             Write-Host "[$i/$total] Erro ao remover: $($perfil.Usuario)" -ForegroundColor Red
         }
@@ -109,17 +134,15 @@ if ($confirm -eq "S") {
         $barra = ("=" * $bars).PadRight(20, " ")
 
     }
+        Write-Host "" 
+        Write-Host "`rProgresso: [$barra] $percent%" -ForegroundColor Green -NoNewline
+        Write-Host "" # Quebra de linha final
+
+    } else {
+        Write-Host "Operacao cancelada"
+    }
+
+    Write-Host ""
+    Write-Host "Finalizado!" -ForegroundColor Cyan
     Write-Host "" 
-    Write-Host "`rProgresso: [$barra] $percent%" -ForegroundColor Green -NoNewline
-    Write-Host "" # Quebra de linha final
-
-    # Log de registro
-    Add-Content $log "Removido: $($perfil.Usuario)"
-} else {
-    Write-Host "Operacao cancelada"
-}
-
-Write-Host ""
-Write-Host "Finalizado!" -ForegroundColor Cyan
-Write-Host "" 
-Read-Host "Pressione ENTER para sair"
+    Read-Host "Pressione ENTER para sair"
