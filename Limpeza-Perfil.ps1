@@ -2,6 +2,9 @@
 # Repositorio: https://github.com/git-ramon/Limpeza-Perfil
 # Contato: ramonrodriguesnw@gmail.com
 
+
+$log = "C:\Log Files\limpeza_perfis.log"
+
 # Lista perfis
 $profiles = Get-CimInstance Win32_UserProfile | Where-Object {
     $_.LocalPath -like "C:\Users\*" -and
@@ -109,6 +112,9 @@ if ($confirm -eq "S") {
     Write-Host "" 
     Write-Host "`rProgresso: [$barra] $percent%" -ForegroundColor Green -NoNewline
     Write-Host "" # Quebra de linha final
+
+    # Log de registro
+    Add-Content $log "Removido: $($perfil.Usuario)"
 } else {
     Write-Host "Operacao cancelada"
 }
