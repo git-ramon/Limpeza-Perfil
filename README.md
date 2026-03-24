@@ -12,3 +12,7 @@ Uso:
 
 Atencao:
 - Revise a lista antes de confirmar a exclusao
+
+
+Extra:
+- Script gerador de usuários e registros fake
