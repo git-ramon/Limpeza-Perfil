@@ -37,7 +37,10 @@ $profiles = Get-CimInstance Win32_UserProfile | Where-Object {
 $profileList = $profiles | ForEach-Object {
     [PSCustomObject]@{
         Usuario = Split-Path $_.LocalPath -Leaf
-        "Ultimo Uso" = if ($_.LastUseTime) { $_.LastUseTime } else { "Desconhecido" }
+        #"Ultimo Uso" = if ($_.LastUseTime) { $_.LastUseTime } else { "Desconhecido" }
+
+        "Ultimo Uso" = if (Test-Path $_.LocalPath) { (Get-Item $_.LocalPath).LastWriteTime } else { "Desconhecido" }
+
         Tipo = "Perfil"
         Ref = $_
         Caminho = $_.LocalPath
@@ -111,11 +114,25 @@ if ($confirm -eq "S") {
         [Console]::SetCursorPosition(0, $posicaoBarra)
         
         try {
-            if ($perfil.Tipo -eq "Perfil") {
+            <#if ($perfil.Tipo -eq "Perfil") {
                 $perfil.Ref | Remove-CimInstance
                 Write-Host "[$i/$total] Removido perfil: $($perfil.Usuario)" -ForegroundColor Green
             } else {
                 Remove-Item $perfil.Caminho -Recurse -Force
+                Write-Host "[$i/$total] Removido orfao: $($perfil.Usuario)" -ForegroundColor Green
+            }#>
+
+            if ($perfil.Tipo -eq "Perfil") {
+                $perfil.Ref | Remove-CimInstance -ErrorAction Stop
+                Write-Host "[$i/$total] Removido perfil: $($perfil.Usuario)" -ForegroundColor Green
+            } else {
+                # Força permissao antes de excluir
+                takeown /F $perfil.Caminho /R /D Y | Out-Null
+                icacls $perfil.Caminho /grant Administradores:F /T /C | Out-Null
+
+                # Remove pasta de forma agressiva
+                cmd /c "rd /s /q `"$($perfil.Caminho)`""
+
                 Write-Host "[$i/$total] Removido orfao: $($perfil.Usuario)" -ForegroundColor Green
             }
 
@@ -123,6 +140,8 @@ if ($confirm -eq "S") {
 
         } catch {
             Write-Host "[$i/$total] Erro ao remover: $($perfil.Usuario)" -ForegroundColor Red
+
+            Escrever-Log -Usuario $perfil.Usuario -Tipo $perfil.Tipo -Status $_.Exception.Message
         }
 
         # Atualiza a posição da barra (caso a lista de logs tenha crescido)
