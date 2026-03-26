@@ -68,7 +68,8 @@ $orfasList = $orfas | ForEach-Object {
 }
 
 # Junta tudo
-$todos = $profileList + $orfasList
+#$todos = $profileList + $orfasList
+$todos = @($profileList) + @($orfasList)
 
 # Exibe Perfis
 Write-Host ""
