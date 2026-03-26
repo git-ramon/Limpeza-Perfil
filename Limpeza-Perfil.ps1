@@ -148,7 +148,8 @@ if ($confirm -eq "S") {
         $posicaoBarra = [Console]::CursorTop
 
         # 2. Calcula e desenha a barra de progresso logo abaixo do último log
-        $percent = [int](($i / $total) * 100)
+        # $percent = [int](($i / $total) * 100)
+        $percent = if ($total -gt 0) { [int](($i / $total) * 100) } else { 100 }
         $bars = [int]($percent / 5)
         $barra = ("=" * $bars).PadRight(20, " ")
 
