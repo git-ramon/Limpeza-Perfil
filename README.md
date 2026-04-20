@@ -11,11 +11,11 @@ O script realiza:
 🔹 Listagem de todos os perfis em `C:\Users`  
 🔹 Identificação de perfis registrados no sistema  
 🔹 Identificação de pastas órfãs (sem registro)  
-🔹 Identificação de registros órfãos (sem pasta)
+🔹 Identificação de registros órfãos (sem pasta)  
 🔹 Remoção segura com confirmação do usuário  
-🔹 Execução local ou remota (via nome ou IP)
-🔹 Execução silenciosa (remoto)
-🔹 Registro de log detalhado
+🔹 Execução local ou remota (via nome ou IP)  
+🔹 Execução silenciosa (remoto)  
+🔹 Registro de log detalhado  
 
 ---
 
