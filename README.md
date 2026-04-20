@@ -36,8 +36,8 @@ O script gera automaticamente um arquivo de log contendo:
 
 O script permite executar a limpeza em máquinas remotas informando:
 
-Nome da máquina
-Endereço IP
+- Nome da máquina  
+- Endereço IP
 
 ---
 
@@ -45,9 +45,10 @@ Endereço IP
 
 O projeto inclui opção para versão compilada via Win-PS2EXE:
 
-✔ Execução sem necessidade de abrir PowerShell  
-✔ Ideal para uso em suporte técnico  
-✔ Portátil (pode rodar em outras máquinas)  
+- Execução sem necessidade de abrir PowerShell  
+- Ideal para uso em suporte técnico  
+- Portátil (pode rodar em outras máquinas)  
+
 ---
 
 ## ▶️ Como usar
