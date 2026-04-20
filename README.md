@@ -11,7 +11,10 @@ O script realiza:
 🔹 Listagem de todos os perfis em `C:\Users`  
 🔹 Identificação de perfis registrados no sistema  
 🔹 Identificação de pastas órfãs (sem registro)  
+🔹 Identificação de registros órfãos (sem pasta)
 🔹 Remoção segura com confirmação do usuário  
+🔹 Execução local ou remota (via nome ou IP)
+🔹 Execução silenciosa (remoto)
 🔹 Registro de log detalhado
 
 ---
@@ -27,6 +30,25 @@ O script gera automaticamente um arquivo de log contendo:
 
 📁 Caminho padrão do log: C:\Log\Limpeza_perfis.txt
 
+---
+
+## 🌐 Execução Remota
+
+O script permite executar a limpeza em máquinas remotas informando:
+
+Nome da máquina
+Endereço IP
+
+---
+
+---
+## Executável (.exe)
+
+O projeto inclui opção para versão compilada via Win-PS2EXE:
+
+✔ Execução sem necessidade de abrir PowerShell
+✔ Ideal para uso em suporte técnico
+✔ Portátil (pode rodar em outras máquinas)
 ---
 
 ## ▶️ Como usar
