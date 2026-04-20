@@ -28,7 +28,8 @@ O script gera automaticamente um arquivo de log contendo:
 - Usuário que executou o script  
 - Nome da máquina  
 
-📁 Caminho padrão do log: C:\Log\Limpeza_perfis.txt
+📁 Caminho padrão do log local: C:\Log;
+📁 Caminho padrão do log destino: C:\Temp
 
 ---
 
