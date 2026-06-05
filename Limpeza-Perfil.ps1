@@ -130,6 +130,26 @@ $profileList = $profiles | ForEach-Object {
 #$todos = $profileList + $orfasList
 $todos = @($profileList) + @($orfasList)
 
+# Inicio da função que calcula espaço em disco local
+
+    try {
+        Write-Host ""
+        Write-Host "=== ESPACO EM DISCO ===" -ForegroundColor Cyan
+
+        Get-PSDrive -PSProvider FileSystem | Select-Object `
+            @{Name="Disco";Expression={$_.Name}},
+            @{Name="Total(GB)";Expression={[math]::Round(($_.Used + $_.Free)/1GB,2)}},
+            @{Name="Livre(GB)";Expression={[math]::Round($_.Free/1GB,2)}} |
+        Format-Table -AutoSize
+
+    } catch {
+        Write-Host ""
+        Write-Host "Falha ao consultar espaco em disco local." -ForegroundColor Red
+        Write-Host ""
+    }
+
+# Fim da função que calcula espaço em disco local
+
 
 # Exibe Perfis
 Write-Host ""
@@ -279,6 +299,58 @@ elseif ($opcao -eq "2") {
     $computador = Read-Host "Digite o nome ou IP da maquina"
     Write-Host ""
 
+    # Inicio da função que calcula espaço em disco Remoto
+        # Detecta IP 
+        $ehIP = $computador -match '^\d{1,3}(\.\d{1,3}){3}$' 
+        
+        if ($ehIP) { try { 
+            # tenta resolver hostname 
+            $hostname = [System.Net.Dns]::GetHostEntry($computador).HostName 
+            
+            if ($hostname) { 
+                $computador = $hostname 
+                } 
+            } catch { 
+                # fallback TrustedHosts 
+                Set-Item 
+                -Path WSMan:\localhost\Client\TrustedHosts 
+                -Value "$computador" 
+                -Force 
+                } 
+            } 
+        
+        try {
+            $resultado = Get-CimInstance `
+                -ClassName Win32_LogicalDisk `
+                -ComputerName $computador `
+                -Filter "DriveType=3" `
+                -ErrorAction Stop | 
+            Select-Object `
+                @{Name="Disco";Expression={$_.DeviceID}}, 
+                @{Name="Total(GB)";Expression={[math]::Round($_.Size/1GB,2)}}, 
+                @{Name="Livre(GB)";Expression={[math]::Round($_.FreeSpace/1GB,2)}} 
+                
+            Write-Host "" 
+            Write-Host "=== ESPACO EM DISCO ===" -ForegroundColor Cyan
+            Write-Host "" 
+
+            $resultado | Format-Table -AutoSize | Out-String | Write-Host
+            } 
+            
+            catch { 
+                
+                if ($_.Exception.Message -like "*Access is denied*") { 
+                    Write-Host "" Write-Host "Acesso negado." -ForegroundColor Red 
+                    Write-Host "" 
+                } else { 
+                    Write-Host "" 
+                    Write-Host "Falha ao consultar espaco em disco." -ForegroundColor Red 
+                    Write-Host "" 
+                } 
+            }
+
+    # Fim da função que calcula espaço em disco Remoto
+
     if (-not (Test-Connection -ComputerName $computador -Count 1 -Quiet)) {
         Write-Host "Maquina nao encontrada!" -ForegroundColor Red
         Write-Host ""
@@ -296,14 +368,16 @@ elseif ($opcao -eq "2") {
     }
     catch {
         Write-Host "WinRM falhou. Tentando via DCOM..." -ForegroundColor Yellow
+        Write-Host ""
 
         # 2. Fallback via DCOM (funciona por IP)
         try {
-            $session = New-CimSession -ComputerName $computador -SessionOption (New-CimSessionOption -Protocol Dcom)
+            $session = New-CimSession -ComputerName $computador -SessionOption (New-CimSessionOption -Protocol Dcom) -ErrorAction Stop
             $perfisCIM = Get-CimInstance Win32_UserProfile -CimSession $session -ErrorAction Stop
         }
         catch {
             Write-Host "Aviso: Nao foi possivel obter perfis via CIM (WinRM/DCOM)." -ForegroundColor Red
+            Write-Host ""
             $perfisCIM = $null
         }
     }
@@ -312,12 +386,13 @@ elseif ($opcao -eq "2") {
 
 if (-not (Test-Path $caminhoUsuarios)) {
     Write-Host "Nao foi possivel acessar o caminho remoto!" -ForegroundColor Red
+    Write-Host ""
     Read-Host "Pressione ENTER para sair"
     return
 }
 
 Write-Host ""
-Write-Host "=== PERFIS ENCONTRADOS ===" -ForegroundColor Cyan
+Write-Host "=== PERFIS ENCONTRADOS ===" -ForegroundColor Green
 Write-Host ""
 
 $usuarios = Get-ChildItem -Path $caminhoUsuarios -Directory -ErrorAction SilentlyContinue
